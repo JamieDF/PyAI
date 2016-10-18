@@ -2,19 +2,27 @@ def from_id_width(id, width):
     return (id % width, id // width)
 
 def draw_tile(graph, id, style, width):
-    r = "."
+    r = " ."
     if 'number' in style and id in style['number']: r = "%d" % style['number'][id]
     if 'point_to' in style and style['point_to'].get(id, None) is not None:
         (x1, y1) = id
         (x2, y2) = style['point_to'][id]
-        if x2 == x1 + 1: r = "\u2192"
-        if x2 == x1 - 1: r = "\u2190"
-        if y2 == y1 + 1: r = "\u2193"
-        if y2 == y1 - 1: r = "\u2191"
-    if 'start' in style and id == style['start']: r = "A "
-    if 'goal' in style and id == style['goal']: r = "Z "
-    if 'path' in style and id in style['path']: r = "@ "
-    if id in graph.walls: r = "#" * width
+        if x2 == x1 + 1: r = "\u2190"
+        if x2 == x1 - 1: r = "\u2192"
+        if y2 == y1 + 1: r = "\u2191"
+        if y2 == y1 - 1: r = "\u2193"
+
+       #Orignal Arrow directions
+       #if x2 == x1 + 1: r = "\u2192"
+       #if x2 == x1 - 1: r = "\u2190"
+       #if y2 == y1 + 1: r = "\u2193"
+       #if y2 == y1 - 1: r = "\u2191"
+
+    if 'start' in style and id == style['start']: r = "A"
+    if 'goal' in style and id == style['goal']: r = "Z"
+    if 'path' in style and id in style['path']: r = "@"
+    if id in graph.walls: r = "W" * width
+    if id in graph.trap: r = "T"  #added trap
     return r
 
 def draw_grid(graph, width=2, **style):
@@ -31,6 +39,7 @@ class SquareGrid:
         self.width = width
         self.height = height
         self.walls = []
+        self.trap = []
     
     def in_bounds(self, id):
         (x, y) = id
@@ -57,13 +66,8 @@ class GridWithWeights(SquareGrid):
 
 diagram4 = GridWithWeights(8, 5)
 diagram4.walls = [(0, 2), (2, 4), (3, 4), (3, 3), (3, 1), (4, 1), (5, 3), (7, 3)]
-diagram4.weights = {loc: 5 for loc in [(3, 4), (3, 5), (4, 1), (4, 2),
-                                       (4, 3), (4, 4), (4, 5), (4, 6), 
-                                       (4, 7), (4, 8), (5, 1), (5, 2),
-                                       (5, 3), (5, 4), (5, 5), (5, 6), 
-                                       (5, 7), (5, 8), (6, 2), (6, 3), 
-                                       (6, 4), (6, 5), (6, 6), (6, 7), 
-                                       (7, 3), (7, 4), (7, 5)]}
+diagram4.trap = [(3, 2)]
+diagram4.weights = {loc: 5 for loc in [(3, 2)]}
 
 import heapq
 
