@@ -12,12 +12,6 @@ def draw_tile(graph, id, style, width):
         if y2 == y1 + 1: r = " \u2191"
         if y2 == y1 - 1: r = " \u2193"
 
-       #Orignal Arrow directions
-       #if x2 == x1 + 1: r = "\u2192"
-       #if x2 == x1 - 1: r = "\u2190"
-       #if y2 == y1 + 1: r = "\u2193"
-       #if y2 == y1 - 1: r = "\u2191"
-
     if 'start' in style and id == style['start']: r = " R"
     if 'goal' in style and id == style['goal']: r = " G"
     if 'path' in style and id in style['path']: r = " @"
@@ -30,12 +24,6 @@ def draw_grid(graph, width=2, **style):
         for x in range(graph.width):
             print("%%-%ds" % width % draw_tile(graph, (x, y), style, width), end="")
         print()
-
-
-#irelavent?
-# data from main article
-# DIAGRAM1_WALLS = [from_id_width(id, width=30) for id in [21,22,51,52,81,82,93,94,111,112,123,124,133,134,141,142,153,154,163,164,171,172,173,174,175,183,184,193,194,201,202,203,204,205,213,214,223,224,243,244,253,254,273,274,283,284,303,304,313,314,333,334,343,344,373,374,403,404,433,434]]
-
 
 
 class SquareGrid:
@@ -68,23 +56,23 @@ class GridWithWeights(SquareGrid):
     def cost(self, from_node, to_node):
         return self.weights.get(to_node, 1)
 
-diagram4 = GridWithWeights(8, 5)
-diagram4.walls = [(0, 2), (2, 4), (3, 4), (3, 3), (3, 1), (4, 1), (5, 3), (7, 3)]
-diagram4.trap = [(3, 2)]
-diagram4.weights = {loc: 5 for loc in [(3, 2)]}
+map = GridWithWeights(12, 12)
+map.walls = [(4, 2), (5, 4), (3, 4), (3, 3), (3, 1), (4, 1), (5, 3), (7, 3), (4, 2), (1, 7), (11, 4), (3, 11), (4, 10), (9, 5), (6, 6), (0, 4), (2, 4)]
+map.trap = [(3, 2), (8, 8), (7, 7), (2, 7), (11, 11)]
+map.weights = {loc: 5 for loc in [(3, 2), (8, 8), (7, 7), (2, 7), (11, 11)]}
 
 import heapq
 
 class PriorityQueue:
     def __init__(self):
         self.elements = []
-    
+
     def empty(self):
         return len(self.elements) == 0
-    
+
     def put(self, item, priority):
         heapq.heappush(self.elements, (priority, item))
-    
+
     def get(self):
         return heapq.heappop(self.elements)[1]
 
