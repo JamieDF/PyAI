@@ -18,8 +18,8 @@ def draw_tile(graph, id, style, width):
        #if y2 == y1 + 1: r = "\u2193"
        #if y2 == y1 - 1: r = "\u2191"
 
-    if 'start' in style and id == style['start']: r = " A"
-    if 'goal' in style and id == style['goal']: r = " Z"
+    if 'start' in style and id == style['start']: r = " R"
+    if 'goal' in style and id == style['goal']: r = " G"
     if 'path' in style and id in style['path']: r = " @"
     if id in graph.walls: r = "#" * width
     if id in graph.trap: r = " T"  #added trap
@@ -31,8 +31,12 @@ def draw_grid(graph, width=2, **style):
             print("%%-%ds" % width % draw_tile(graph, (x, y), style, width), end="")
         print()
 
+
+#irelavent?
 # data from main article
-DIAGRAM1_WALLS = [from_id_width(id, width=30) for id in [21,22,51,52,81,82,93,94,111,112,123,124,133,134,141,142,153,154,163,164,171,172,173,174,175,183,184,193,194,201,202,203,204,205,213,214,223,224,243,244,253,254,273,274,283,284,303,304,313,314,333,334,343,344,373,374,403,404,433,434]]
+# DIAGRAM1_WALLS = [from_id_width(id, width=30) for id in [21,22,51,52,81,82,93,94,111,112,123,124,133,134,141,142,153,154,163,164,171,172,173,174,175,183,184,193,194,201,202,203,204,205,213,214,223,224,243,244,253,254,273,274,283,284,303,304,313,314,333,334,343,344,373,374,403,404,433,434]]
+
+
 
 class SquareGrid:
     def __init__(self, width, height):

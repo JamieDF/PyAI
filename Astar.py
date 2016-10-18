@@ -1,3 +1,5 @@
+
+print ("\n Key : \n R = robot location \n G = Goal \n T = Trap \n ### = Wall \n @ = final path to goal \n")
 from implementation import *
 came_from, cost_so_far = a_star_search(diagram4, (0, 0), (5, 2))
 draw_grid(diagram4, width=3, point_to=came_from, start=(0, 0), goal=(5, 2))
