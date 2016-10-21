@@ -1,0 +1,21 @@
+TODO
+
+-state space
+-transition function
+-cost function
+-goal encoding
+-two heuristic functions (be prepared to explain choice and operation)
+
+
+Execution model
+
+robots 1 & 2:
+A	if goal not reached...
+B	-run a* (find path) for each robot
+C	-move to next vertices (1 space on grid)
+D	-append transitions to lists
+E	-append the cost of transitions to lists
+F	-generate graph showing changes
+
+
+
