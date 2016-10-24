@@ -1,6 +1,7 @@
 def from_id_width(id, width):
     return (id % width, id // width)
 
+
 def draw_tile(graph, id, style, width):
     r = " ."
     if 'number' in style and id in style['number']: r = " %d" % style['number'][id]
@@ -56,10 +57,15 @@ class GridWithWeights(SquareGrid):
     def cost(self, from_node, to_node):
         return self.weights.get(to_node, 1)
 
+# Map details and locations
+
 map = GridWithWeights(12, 12)
-map.walls = [(4, 2), (5, 4), (3, 4), (3, 3), (3, 1), (4, 1), (5, 3), (7, 3), (4, 2), (1, 7), (11, 4), (3, 11), (4, 10), (9, 5), (6, 6), (0, 4), (2, 4)]
+map.walls = [(1, 4),  (4, 2), (5, 4), (3, 4), (3, 3), (3, 1), (4, 1), (5, 3), (7, 3), (4, 2), (1, 7), (11, 4), (3, 11), (4, 10), (9, 5), (6, 6), (0, 4), (2, 4)]
 map.trap = [(3, 2), (8, 8), (7, 7), (2, 7), (11, 11)]
 map.weights = {loc: 5 for loc in [(3, 2), (8, 8), (7, 7), (2, 7), (11, 11)]}
+
+
+
 
 import heapq
 
@@ -112,5 +118,13 @@ def a_star_search(graph, start, goal):
                 priority = new_cost + heuristic(goal, next)
                 frontier.put(next, priority)
                 came_from[next] = current
-    
+
+
+
+    # New,  Exits program if the robot could not make it to the goal
+    if current != goal:
+        import sys
+        sys.exit("could not find goal")
+
     return came_from, cost_so_far
+
