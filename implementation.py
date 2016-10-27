@@ -105,7 +105,13 @@ def euclidianHeuristic(a, b):
 
 def a_star_search(graph, start, goal):
     heur = int(input("Type '1' to execute with Manhattan heuristic OR '2' to for Euclidian\n->"))
+<<<<<<< HEAD
     while (heur != 1) and (heur != 2):
+=======
+    print(heur)
+    print(type(heur))
+    while (heur != 1) or (heur != 2):
+>>>>>>> 19d7cab660a6abe8360dfb57743e0026fcea10ce
         heur = int(input("Type '1' to execute with Manhattan heuristic OR '2' to for Euclidian\n->"))
     frontier = PriorityQueue()
     frontier.put(start, 0)
@@ -121,6 +127,7 @@ def a_star_search(graph, start, goal):
             if current == goal:
                 break
         
+<<<<<<< HEAD
             for next in graph.neighbors(current):
                 new_cost = cost_so_far[current] + graph.cost(current, next)
                 if next not in cost_so_far or new_cost < cost_so_far[next]:
@@ -129,6 +136,15 @@ def a_star_search(graph, start, goal):
                     frontier.put(next, priority)
                     came_from[next] = current
 
+=======
+                for next in graph.neighbors(current):
+                    new_cost = cost_so_far[current] + graph.cost(current, next)
+                    if next not in cost_so_far or new_cost < cost_so_far[next]:
+                        cost_so_far[next] = new_cost
+                        priority = new_cost + manhattanHeuristic(goal, next)
+                        frontier.put(next, priority)
+                        came_from[next] = current
+>>>>>>> 19d7cab660a6abe8360dfb57743e0026fcea10ce
     else:
         while not frontier.empty():
             current = frontier.get()
@@ -136,6 +152,7 @@ def a_star_search(graph, start, goal):
             if current == goal:
                 break
         
+<<<<<<< HEAD
             for next in graph.neighbors(current):
                 new_cost = cost_so_far[current] + graph.cost(current, next)
                 if next not in cost_so_far or new_cost < cost_so_far[next]:
@@ -143,6 +160,15 @@ def a_star_search(graph, start, goal):
                     priority = new_cost + euclidianHeuristic(goal, next)
                     frontier.put(next, priority)
                     came_from[next] = current
+=======
+                for next in graph.neighbors(current):
+                    new_cost = cost_so_far[current] + graph.cost(current, next)
+                    if next not in cost_so_far or new_cost < cost_so_far[next]:
+                        cost_so_far[next] = new_cost
+                        priority = new_cost + euclidianHeuristic(goal, next)
+                        frontier.put(next, priority)
+                        came_from[next] = current
+>>>>>>> 19d7cab660a6abe8360dfb57743e0026fcea10ce
 
 
     #New,  Exits program if the robot could not make it to the goal
