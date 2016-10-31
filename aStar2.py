@@ -1,5 +1,4 @@
 from implementation2 import GridWithWeights
-#TODO Multiple Robots
 
 """
 start = tuple(map(int, input("Please enter the robots start location(x,y) :").split(',')))
