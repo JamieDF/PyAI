@@ -25,12 +25,14 @@ def draw_tile(graph, id, style, width):
         if y2 == y1 + 1: r = " \u2191"
         if y2 == y1 - 1: r = " \u2193"
 
+
+    if 'path' in style and id in style['path']: r = " @"
+    if 'path2' in style and id in style['path2']: r = " *"
+
     if 'start' in style and id == style['start']: r = " R"
     if 'goal' in style and id == style['goal']: r = " G"
     if 'start2' in style and id == style['start2']: r = " R2"
     if 'goal2' in style and id == style['goal2']: r = " G2"
-    if 'path' in style and id in style['path']: r = " @"
-    if 'path2' in style and id in style['path2']: r = " *"
 
     if id in graph.walls: r = "#" * width
     if id in graph.trap: r = " T"  # added trap
@@ -50,6 +52,8 @@ class SquareGrid:
         self.height = height
         self.walls = []
         self.trap = []
+
+
 
     def in_bounds(self, id):
         (x, y) = id
@@ -93,6 +97,7 @@ class PriorityQueue:
 
 
 def reconstruct_path(came_from, start, goal):
+
     current = goal
     path = [current]
     while current != start:
@@ -101,6 +106,7 @@ def reconstruct_path(came_from, start, goal):
     return path
 
 def reconstruct_path2(came_from2, start2, goal2):
+
     current = goal2
     path2 = [current]
     while current != start2:
@@ -162,6 +168,9 @@ def a_star_search(graph, start, goal, start2, goal2):
                     priority = new_cost + euclidianHeuristic(goal, next)
                     frontier.put(next, priority)
                     came_from[next] = current
+    print("Total cost for Robot ones path")
+    print(cost_so_far[next])
+
 
     # New,  Exits program if the robot could not make it to the goal
     if current != goal:
@@ -213,6 +222,8 @@ def a_star_search(graph, start, goal, start2, goal2):
                     priority = new_cost + euclidianHeuristic(goal2, next)
                     frontier.put(next, priority)
                     came_from2[next] = current
+    print("Total cost for Robot twos path")
+    print(cost_so_far2[next])
 
     # New,  Exits program if the robot could not make it to the goal
     if current != goal2:
