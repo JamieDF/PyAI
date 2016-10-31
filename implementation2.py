@@ -205,11 +205,14 @@ def a_star_search(graph, start1, goal1, start2, goal2):
                 break
 
             #Check if any neighbours equal the last added vertex to Robot1's priority queue
+            counter = 0
             for i in graph.neighbors(current2):
-                if i == route1[i + 1]:
+                if i == route1[counter + 1]:
                     #If so, remove that vertex from the list of possible neighbours
                     del graph.neighbors(current2)[i]
-            
+                else:
+                    counter += 1
+
             #Find next vertex in path and add to priority queue 
             for next in graph.neighbors(current2):
                 new_cost2 = cost_so_far2[current2] + graph.cost(current2, next)
