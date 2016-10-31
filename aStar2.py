@@ -6,8 +6,8 @@ start = tuple(map(int, input("Please enter the robots start location(x,y) :").sp
 goal = tuple(map(int, input("Please enter the robots goal location(x,y) :").split(',')))
 """
 
-start = (0, 0)
-goal = (10, 10)
+start1 = (0, 0)
+goal1 = (10, 10)
 start2 = (2, 2)
 goal2 = (7,8)
 
@@ -26,13 +26,17 @@ print("-----------------------------------")
 
 from implementation2 import *
 
-came_from, cost_so_far, came_from2, cost_so_fa2 = a_star_search(map, start, goal, start2, goal2)
+came_from1, cost_so_far1, came_from2, cost_so_far2 = a_star_search(map, start1, goal1, start2, goal2)
 
-draw_grid(map, width=3, point_to=came_from, point_to2=came_from2, start=start, goal=goal, start2=start2, goal2=goal2)
+
+#Prints cost graph
+draw_grid(map, width=3, number1=cost_so_far1, number2=cost_so_far2, start1=start1, goal1=goal1, start2=start2, goal2=goal2)
 print("-----------------------------------")
-draw_grid(map, width=3, number=cost_so_far, number2=cost_so_fa2, start=start, goal=goal, start2=start2, goal2=goal2)
+
+#prints final path for first robot only
+draw_grid(map, width=3, start1=start1, goal1=goal1, path1=reconstruct_path1(came_from1=came_from1, start1=start1, goal1=goal1))
 print("-----------------------------------")
-draw_grid(map, width=3, start=start, goal=goal, path=reconstruct_path(came_from=came_from, start=start, goal=goal))
-print("-----------------------------------")
-draw_grid(map, width=3,  start=start, goal=goal, start2=start2, goal2=goal2, path=reconstruct_path(came_from=came_from, start=start, goal=goal), path2=reconstruct_path2(came_from2=came_from2, start2=start2, goal2=goal2))
+
+#prints paths for both robots, with second robot overwriting path of first robot
+draw_grid(map, width=3,  start1=start1, goal1=goal1, start2=start2, goal2=goal2, path1=reconstruct_path1(came_from1=came_from1, start1=start1, goal1=goal1), path2=reconstruct_path2(came_from2=came_from2, start2=start2, goal2=goal2))
 print("-----------------------------------")

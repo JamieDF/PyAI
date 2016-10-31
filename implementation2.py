@@ -7,30 +7,14 @@ def from_id_width(id, width):
 
 def draw_tile(graph, id, style, width):
     r = " ."
-    if 'number' in style and id in style['number']: r = " %d" % style['number'][id]
+    if 'number1' in style and id in style['number1']: r = " %d" % style['number1'][id]
     if 'number2' in style and id in style['number2']: r = " %d" % style['number2'][id]
-    if 'point_to' in style and style['point_to'].get(id, None) is not None:
-        (x1, y1) = id
-        (x2, y2) = style['point_to'][id]
-        if x2 == x1 + 1: r = " \u2190"
-        if x2 == x1 - 1: r = " \u2192"
-        if y2 == y1 + 1: r = " \u2191"
-        if y2 == y1 - 1: r = " \u2193"
 
-    if 'point_to2' in style and style['point_to2'].get(id, None) is not None:
-        (x1, y1) = id
-        (x2, y2) = style['point_to2'][id]
-        if x2 == x1 + 1: r = " \u2190"
-        if x2 == x1 - 1: r = " \u2192"
-        if y2 == y1 + 1: r = " \u2191"
-        if y2 == y1 - 1: r = " \u2193"
-
-
-    if 'path' in style and id in style['path']: r = " @"
+    if 'path1' in style and id in style['path1']: r = " @"
     if 'path2' in style and id in style['path2']: r = " *"
 
-    if 'start' in style and id == style['start']: r = " R"
-    if 'goal' in style and id == style['goal']: r = " G"
+    if 'start1' in style and id == style['start1']: r = " R"
+    if 'goal1' in style and id == style['goal1']: r = " G"
     if 'start2' in style and id == style['start2']: r = " R2"
     if 'goal2' in style and id == style['goal2']: r = " G2"
 
@@ -96,137 +80,154 @@ class PriorityQueue:
         return heapq.heappop(self.elements)[1]
 
 
-def reconstruct_path(came_from, start, goal):
+def reconstruct_path1(came_from1, start1, goal1):
 
-    current = goal
-    path = [current]
-    while current != start:
-        current = came_from[current]
-        path.append(current)
-    return path
+    current1 = goal1
+    path1 = [current1]
+    while current1 != start1:
+        current1 = came_from1[current1]
+        path1.append(current1)
+    return path1
 
 def reconstruct_path2(came_from2, start2, goal2):
 
-    current = goal2
-    path2 = [current]
-    while current != start2:
-        current = came_from2[current]
-        path2.append(current)
+    current2 = goal2
+    path2 = [current2]
+    while current2 != start2:
+        current2 = came_from2[current2]
+        path2.append(current2)
 
     return path2
 
+#First heuristic function finds city block distance
 def manhattanHeuristic(a, b):
     (x1, y1) = a
     (x2, y2) = b
     return abs(x1 - x2) + abs(y1 - y2)
 
-
+#Second heuristic finds straight line distance to goal
 def euclidianHeuristic(a, b):
     (x1, y1) = a
     (x2, y2) = b
     return abs(math.sqrt((abs(x1 - x2)) ** 2 + (abs(y1 - y2)) ** 2))
 
 
-def a_star_search(graph, start, goal, start2, goal2):
+def a_star_search(graph, start1, goal1, start2, goal2):
     heur = int(input("Type '1' to execute with Manhattan heuristic OR '2' to for Euclidian\n->"))
     while (heur != 1) and (heur != 2):
         heur = int(input("Type '1' to execute with Manhattan heuristic OR '2' to for Euclidian\n->"))
 
-    frontier = PriorityQueue()
-    frontier.put(start, 0)
-    came_from = {}
-    cost_so_far = {}
-    came_from[start] = None
-    cost_so_far[start] = 0
-
-    if (heur == 1):
-        while not frontier.empty():
-            current = frontier.get()
-
-            if current == goal:
-                break
-
-            for next in graph.neighbors(current):
-                new_cost = cost_so_far[current] + graph.cost(current, next)
-                if next not in cost_so_far or new_cost < cost_so_far[next]:
-                    cost_so_far[next] = new_cost
-                    priority = new_cost + manhattanHeuristic(goal, next)
-                    frontier.put(next, priority)
-                    came_from[next] = current
-
-    else:
-        while not frontier.empty():
-            current = frontier.get()
-
-            if current == goal:
-                break
-
-            for next in graph.neighbors(current):
-                new_cost = cost_so_far[current] + graph.cost(current, next)
-                if next not in cost_so_far or new_cost < cost_so_far[next]:
-                    cost_so_far[next] = new_cost
-                    priority = new_cost + euclidianHeuristic(goal, next)
-                    frontier.put(next, priority)
-                    came_from[next] = current
-    print("Total cost for Robot ones path")
-    print(cost_so_far[next])
-
-
-    # New,  Exits program if the robot could not make it to the goal
-    if current != goal:
-        import sys
-        sys.exit("could not find goal")
-
-
-
-
-
-#pt2
-
-
-
-
-    frontier = PriorityQueue()
-    frontier.put(start2, 0)
+    frontier1 = PriorityQueue()
+    frontier2 = PriorityQueue()
+    frontier1.put(start1, 0)
+    frontier2.put(start2, 0)
+    came_from1 = {}
     came_from2 = {}
+    cost_so_far1 = {}
     cost_so_far2 = {}
+    came_from1[start1] = None
     came_from2[start2] = None
+    cost_so_far1[start1] = 0
     cost_so_far2[start2] = 0
+    route = []
 
     if (heur == 1):
-        while not frontier.empty():
-            current = frontier.get()
-
-            if current == goal2:
+        #For first robot
+        while not frontier1.empty():
+            current1 = frontier1.get()
+            route.append(current1)
+            
+            
+            if current1 == goal1:
+                break
+            
+            #Find next vertex in path and add to priority queue 
+            for next in graph.neighbors(current1):
+                new_cost1 = cost_so_far1[current1] + graph.cost(current1, next)
+                if next not in cost_so_far1 or new_cost1 < cost_so_far1[next]:
+                    cost_so_far1[next] = new_cost1
+                    priority1 = new_cost1 + manhattanHeuristic(goal1, next)
+                    frontier1.put(next, priority1)
+                    came_from1[next] = current1
+        
+        
+        #For second robot    
+        while not frontier2.empty():
+            current2 = frontier2.get()
+            
+            if current2 == goal2:
                 break
 
-            for next in graph.neighbors(current):
-                new_cost = cost_so_far2[current] + graph.cost(current, next)
-                if next not in cost_so_far2 or new_cost < cost_so_far2[next]:
-                    cost_so_far2[next] = new_cost
-                    priority = new_cost + manhattanHeuristic(goal2, next)
-                    frontier.put(next, priority)
-                    came_from2[next] = current
+            #Check if any neighbours equal the last added vertex to Robot1's priority queue
+            counter=0
+            for i in graph.neighbors(current2):
+                if (i == route[counter + 1]):
+                    #If so, remove that vertex from the list of possible neighbours
+                    del graph.neighbors(current2)[i]
+                else:
+                    counter += 1
+                
+            #Find next vertex in path and add to priority queue 
+            for next in graph.neighbors(current2):
+                new_cost2 = cost_so_far2[current2] + graph.cost(current2, next)
+                if next not in cost_so_far2 or new_cost2 < cost_so_far2[next]:
+                    cost_so_far2[next] = new_cost2
+                    priority2 = new_cost2 + manhattanHeuristic(goal2, next)
+                    frontier2.put(next, priority2)
+                    came_from2[next] = current2
+            
 
     else:
-        while not frontier.empty():
-            current = frontier.get()
-
-            if current == goal2:
+        #For first robot
+        while not frontier1.empty():
+            current1 = frontier1.get()
+            route.append(current1)
+            
+            
+            if current1 == goal:
+                break
+            
+            #Find next vertex in path and add to priority queue 
+            for next in graph.neighbors(current1):
+                new_cost1 = cost_so_far1[current1] + graph.cost(current1, next)
+                if next not in cost_so_far1 or new_cost1 < cost_so_far1[next]:
+                    cost_so_far1[next] = new_cost1
+                    priority1 = new_cost1 + euclidianHeuristic(goal1, next)
+                    frontier1.put(next, priority1)
+                    came_from1[next] = current1
+        
+        
+        #For second robot    
+        while not frontier2.empty():
+            current2 = frontier2.get()
+            
+            if current2 == goal:
                 break
 
-            for next in graph.neighbors(current):
-                new_cost = cost_so_far2[current] + graph.cost(current, next)
-                if next not in cost_so_far2 or new_cost < cost_so_far2[next]:
-                    cost_so_far2[next] = new_cost
-                    priority = new_cost + euclidianHeuristic(goal2, next)
-                    frontier.put(next, priority)
-                    came_from2[next] = current
-    print("Total cost for Robot twos path")
+            #Check if any neighbours equal the last added vertex to Robot1's priority queue
+            for i in graph.neighbors(current2):
+                if i == route1[i + 1]:
+                    #If so, remove that vertex from the list of possible neighbours
+                    del graph.neighbors(current2)[i]
+            
+            #Find next vertex in path and add to priority queue 
+            for next in graph.neighbors(current2):
+                new_cost2 = cost_so_far2[current2] + graph.cost(current2, next)
+                if next not in cost_so_far2 or new_cost2 < cost_so_far2[next]:
+                    cost_so_far2[next] = new_cost2
+                    priority2 = new_cost2 + euclidianHeuristic(goal2, next)
+                    frontier2.put(next, priority2)
+                    came_from2[next] = current2
+    print("Total cost for Robot ones path")
     print(cost_so_far2[next])
 
+
     # New,  Exits program if the robot could not make it to the goal
-    if current != goal2:
+    if current1 != goal1:
         import sys
-        sys.exit("could not find goal")
-    return came_from, cost_so_far, came_from2, cost_so_far2
+        sys.exit("Could not find Robot1 goal.")
+    elif current2 != goal2:
+        sys.exit("Could not find Robot1 goal.")
+
+    #returns costs and paths for each robot
+    return came_from1, cost_so_far2, came_from2, cost_so_far2
