@@ -1,0 +1,46 @@
+Problem 1:
+start1 = (0,0)
+goal1 = (5,2)
+start2 = (6,4)
+goal2 = (2,0)
+
+
+
+Problem 2:
+start1 = (0,4)
+goal1 = (5,2)
+start2 = (4,3)
+goal2 = (2,0)
+
+
+
+Problem 3:
+start1 = (0,0)
+goal1 = (5,2)
+start2 = (6,4)
+goal2 = (2,0)
+
+
+
+Problem 4:
+start1 = (4,4)
+goal1 = (5,0)
+start2 = (2,0)
+goal2 = (3,4)
+
+
+Problem 4 layout:
+ .  .  R2 .  .  G  .  .
+ . ###### . ######### T
+ .  . ### .  .  .  .  .
+### .  .  T ### . ### .
+ .  .  .  G2 R  .  .  .
+
+key:
+ R = robot location
+ R2 = Second robot location
+ G = Goal
+ G2 = Second Goal
+ T = Trap
+ ### = Wall
+ .  = blank space

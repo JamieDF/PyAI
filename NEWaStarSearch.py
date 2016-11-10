@@ -1,19 +1,27 @@
-from implementation2 import *
+from NEWimplementation import *
 
-"""
-start = tuple(map(int, input("Please enter the robots start location(x,y) :").split(',')))
-goal = tuple(map(int, input("Please enter the robots goal location(x,y) :").split(',')))
-"""
+#takes both robots start and end locations from an input
+start1 = tuple(map(int, input("Please enter the first robots start location(x,y) :").split(',')))
+goal1 = tuple(map(int, input("Please enter the first robots goal location(x,y) :").split(',')))
 
-start1 = (2, 0)
-goal1 = (2, 3)
-start2 = (1, 4)
-goal2 = (6, 4)
+start2 = tuple(map(int, input("Please enter the second robots start location(x,y) :").split(',')))
+goal2 = tuple(map(int, input("Please enter the second robots goal location(x,y) :").split(',')))
+
+
+#Imports the maps walls and trap locations from the file located in the GridFiles folder
+
+#Note to change the map layout, change the number following the files title to 1,2,3 or for to get the correct maps
+#i.e to use map 4 chagnge the open to 'GridFiles/gridWalls4.txt' and 'GridFiles/gridTraps4.txt'
+with open('GridFiles/gridWalls1.txt') as f:
+    list1 = [tuple(map(int, i.split(','))) for i in f]
+
+with open('GridFiles/gridTraps1.txt') as f:
+    list2 = [tuple(map(int, i.split(','))) for i in f]
 
 map = GridWithWeights(8, 5)
-map.walls = [(0,2), (1,2), (3,2), (5,2), (6,2), (7,2)]
-map.trap = [(2, 2)]
-map.weights = {loc: 5 for loc in [(2,2)]}
+map.walls = list1
+map.trap = list2
+map.weights = {loc: 5 for loc in list2}
 
 came_from1, cost_so_far1, came_from2, cost_so_far2 = a_star_search(map, start1, goal1, start2, goal2)
 
