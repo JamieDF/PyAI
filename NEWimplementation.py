@@ -1,9 +1,10 @@
 """
 This file contains...
--A* Search Algorithm
+-A* Search Algorithm (taken from RedBlobGames)
 -cost function
 -two heuristic functions (Euclidian and Manhattan)
 -code to prevent the robots from colliding with each other and finding alternative paths
+-
 """
 
 import math
@@ -166,11 +167,7 @@ def a_star_search(graph, start1, goal1, start2, goal2): #Execute A* algorithm
         print(unoccupiedCoords)
 
 
-        print("Iteration:    %r  Pos:    %r" % (counter, current2))
-
-
         #Find next vertex in path and add to priority queue 
-        '''for next in graph.neighbors(current2):'''
         for next in unoccupiedCoords:
             new_cost2 = cost_so_far2[current2] + graph.cost(current2, next)
             if next not in cost_so_far2 or new_cost2 < cost_so_far2[next]:
